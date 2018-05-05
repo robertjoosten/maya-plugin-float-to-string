@@ -149,7 +149,7 @@ class FloatToStringNode(OpenMayaMPx.MPxNode):
         cls.attributeAffects(cls.prefix, cls.output)
         cls.attributeAffects(cls.suffix, cls.output)
 
-# ---------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 
 def initializePlugin(mObject):
     mPlugin = OpenMayaMPx.MFnPlugin(mObject)
@@ -180,7 +180,7 @@ def uninitializePlugin(mObject):
             )
         )
     
-# ---------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 
 AETemplateCommand = """
 global proc AEfloatToStringTemplate( string $nodeName )
