@@ -1,4 +1,4 @@
-# maya-plugin-float2string
+# maya-plugin-float-to-string
 <p align="center"><img src="icons/floatToString.png?raw=true"></p>
 This plugin will register a Maya node that can convert a float to a string so it can be used in combination with an annotation. The display precision can be adjusted and so can a prefix and suffix be added.
 
