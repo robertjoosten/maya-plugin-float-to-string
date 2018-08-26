@@ -1,13 +1,10 @@
-# rjFloatToString
-<img align="right" src="https://github.com/robertjoosten/rjFloatToString/blob/master/icons/floatToString.png">
+# maya-plugin-float2string
+<p align="center"><img src="icons/floatToString.png?raw=true"></p>
 This plugin will register a Maya node that can convert a float to a string so it can be used in combination with an annotation. The display precision can be adjusted and so can a prefix and suffix be added.
 
 ## Installation
-Copy the **rjFloatToString.py** file in any of the directories that are in your MAYA_PLUG_IN_PATH environment variable:
-> C:\Program Files\Autodesk\<MAYA_VERSION>\plug-ins
-
-Copy all the png files in any of the directories that are in your XBMLANGPATH environment variable:
-> C:\Program Files\Autodesk\<MAYA_VERSION>\icons
+* Extract the content of the .rar file anywhere on disk.
+* Drag the floatToString.mel file in Maya to permanently install the plugin.
 
 ## Usage     
 **Node:**

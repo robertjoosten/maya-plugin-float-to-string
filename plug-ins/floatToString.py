@@ -3,22 +3,14 @@ This plugin will register a Maya node that can convert a float to a string so
 it can be used in combination with an annotation. The display precision can 
 be adjusted and so can a prefix and suffix be added.
 
-
-.. figure:: https://github.com/robertjoosten/rjFloatToString/blob/master/icons/floatToString.png
+.. figure:: /_images/floatToString.png
    :align: center
 
 Installation
 ============
-Copy the "rjFloatToString.py" file in any of the directories that are in your 
-MAYA_PLUG_IN_PATH environment variable   
-::
-    C://Program Files//Autodesk//<MAYA_VERSION>//plug-ins
-    
-Copy all the png files in any of the directories that are in your 
-XBMLANGPATH environment variable
-::
-    C://Program Files//Autodesk//<MAYA_VERSION>//icons
-		
+* Extract the content of the .rar file anywhere on disk.
+* Drag the floatToString.mel file in Maya to permanently install the plugin.
+
 Usage
 =====
 Node
@@ -40,18 +32,18 @@ Node
         "{0}.text".format(annotation)
     )
 """
-
-__author__   = "Robert Joosten"
-__version__  = "0.1.0"
-__email__    = "rwm.joosten@gmail.com"
-
 from maya import OpenMaya, OpenMayaMPx
+
+__author__ = "Robert Joosten"
+__version__ = "0.1.1"
+__email__ = "rwm.joosten@gmail.com"
+
 
 class FloatToStringNode(OpenMayaMPx.MPxNode):
     kPluginNodeName = "floatToString"
     kPluginNodeId = OpenMaya.MTypeId(0x31550)
     kPluginNodeClassify = "utility/general"
-    
+
     def __init__(self):
         OpenMayaMPx.MPxNode.__init__(self)
 
@@ -59,27 +51,27 @@ class FloatToStringNode(OpenMayaMPx.MPxNode):
         # get input
         floatData = data.inputValue(self.float)
         floatValue = floatData.asFloat()
-        
+
         precisionData = data.inputValue(self.precision)
         precisionValue = precisionData.asInt()
-        
+
         prefixData = data.inputValue(self.prefix)
         prefixValue = prefixData.asString()
-      
+
         suffixData = data.inputValue(self.suffix)
         suffixValue = suffixData.asString()
-        
+
         # set output
         outputVolume = data.outputValue(self.output)
         outputVolume.setString(
             "{p} {n:.{d}f} {s}".format(
-                n=floatValue, 
+                n=floatValue,
                 d=precisionValue,
                 p=prefixValue,
                 s=suffixValue
             ).strip()
         )
-        
+
         data.setClean(plug)
 
     @classmethod
@@ -87,61 +79,64 @@ class FloatToStringNode(OpenMayaMPx.MPxNode):
         return OpenMayaMPx.asMPxPtr(cls())
 
     @classmethod
-    def nodeInitializer(cls):  
-        # input
+    def nodeInitializer(cls):
+        # float input
         floatAttr = OpenMaya.MFnNumericAttribute()
         cls.float = floatAttr.create(
-            "float", 
-            "f", 
-            OpenMaya.MFnNumericData.kFloat, 
+            "float",
+            "f",
+            OpenMaya.MFnNumericData.kFloat,
             0.0
         )
         floatAttr.setKeyable(True)
-        
+
+        # precision input
         precisionAttr = OpenMaya.MFnNumericAttribute()
         cls.precision = precisionAttr.create(
-            "precision", 
-            "prec", 
-            OpenMaya.MFnNumericData.kInt, 
+            "precision",
+            "prec",
+            OpenMaya.MFnNumericData.kInt,
             3
         )
         precisionAttr.setKeyable(True)
-        
+
+        # prefix input
         stringData = OpenMaya.MFnStringData().create("")
         prefixAttr = OpenMaya.MFnTypedAttribute()
         cls.prefix = prefixAttr.create(
-            "prefix", 
-            "pref", 
-            OpenMaya.MFnData.kString, 
+            "prefix",
+            "pref",
+            OpenMaya.MFnData.kString,
             stringData
         )
-        
+
+        # suffix input
         stringData = OpenMaya.MFnStringData().create("")
         suffixAttr = OpenMaya.MFnTypedAttribute()
-        cls.suffix = prefixAttr.create(
-            "suffix", 
-            "suf", 
-            OpenMaya.MFnData.kString, 
+        cls.suffix = suffixAttr.create(
+            "suffix",
+            "suf",
+            OpenMaya.MFnData.kString,
             stringData
         )
-        
+
         # output
         stringData = OpenMaya.MFnStringData().create("")
         outputAttr = OpenMaya.MFnTypedAttribute()
         cls.output = outputAttr.create(
-            "output", 
-            "o", 
-            OpenMaya.MFnData.kString, 
+            "output",
+            "o",
+            OpenMaya.MFnData.kString,
             stringData
         )
         outputAttr.setWritable(False)
 
         # add attributes
-        cls.addAttribute(cls.float)  
-        cls.addAttribute(cls.precision)  
-        cls.addAttribute(cls.prefix)  
-        cls.addAttribute(cls.suffix) 
-        cls.addAttribute(cls.output) 
+        cls.addAttribute(cls.float)
+        cls.addAttribute(cls.precision)
+        cls.addAttribute(cls.prefix)
+        cls.addAttribute(cls.suffix)
+        cls.addAttribute(cls.output)
 
         # add dependencies
         cls.attributeAffects(cls.float, cls.output)
@@ -149,44 +144,49 @@ class FloatToStringNode(OpenMayaMPx.MPxNode):
         cls.attributeAffects(cls.prefix, cls.output)
         cls.attributeAffects(cls.suffix, cls.output)
 
+
 # ----------------------------------------------------------------------------
+
 
 def initializePlugin(mObject):
     mPlugin = OpenMayaMPx.MFnPlugin(mObject)
-    try:        
+    try:
         mPlugin.registerNode(
-            FloatToStringNode.kPluginNodeName, 
-            FloatToStringNode.kPluginNodeId, 
-            FloatToStringNode.nodeCreator, 
+            FloatToStringNode.kPluginNodeName,
+            FloatToStringNode.kPluginNodeId,
+            FloatToStringNode.nodeCreator,
             FloatToStringNode.nodeInitializer
         )
-    except:     
+    except:
         raise RuntimeError(
             "Failed to register : {0}".format(
                 FloatToStringNode.kPluginNodeName
             )
         )
 
+
 def uninitializePlugin(mObject):
     mPlugin = OpenMayaMPx.MFnPlugin(mObject)
-    try:        
+    try:
         mPlugin.deregisterNode(
             FloatToStringNode.kPluginNodeId
         )
-    except:     
+    except:
         raise RuntimeError(
             "Failed to deregister : {0}".format(
                 FloatToStringNode.kPluginNodeName
             )
         )
-    
+
+
 # ----------------------------------------------------------------------------
+
 
 AETemplateCommand = """
 global proc AEfloatToStringTemplate( string $nodeName )
 {
     editorTemplate -beginScrollLayout;
- 
+
     editorTemplate -beginLayout "Input" -collapse 0;
         editorTemplate -addControl "float";
         editorTemplate -addControl "precision";
@@ -194,11 +194,11 @@ global proc AEfloatToStringTemplate( string $nodeName )
         editorTemplate -addControl "suffix";
     editorTemplate -beginLayout "Output" -collapse 0;
         editorTemplate -addControl "output";
-  
+
     editorTemplate -endLayout;
- 
+
     AEdependNodeTemplate $nodeName;
- 
+
     editorTemplate -addExtraControls;
     editorTemplate -endScrollLayout;
 }
