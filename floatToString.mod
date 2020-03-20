@@ -4,3 +4,4 @@
 + MAYAVERSION:2017 floatToString 0.1.1 <PATH>
 + MAYAVERSION:2018 floatToString 0.1.1 <PATH>
 + MAYAVERSION:2019 floatToString 0.1.1 <PATH>
++ MAYAVERSION:2020 floatToString 0.1.1 <PATH>
